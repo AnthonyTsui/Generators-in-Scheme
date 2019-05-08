@@ -147,6 +147,6 @@
 
 
 
-;Todo: review let syntax to properly nest them
+;
 ;Finish making the generator and start making comparison functionalities. (this will probably be trivial in comparison
 ;                                                                           if we just end up using the tree gen)
