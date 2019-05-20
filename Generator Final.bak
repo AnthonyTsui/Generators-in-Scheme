@@ -37,7 +37,7 @@
 (define treeGen
   (lambda (tree)
     (let ((escapeCont 'Initial))
-      (letrec ((generate-node
+      (letrec ((generate-leaf
                 (lambda ()
                   (let loop ((tree tree))
                     (cond ((null? tree) 'Skip)
@@ -45,23 +45,23 @@
                                         (loop (cdr tree)))
                           (else (call/cc
                                  (lambda(currPos)
-                                   (set! generate-node currPos)
+                                   (set! generate-leaf currPos)
                                    (escapeCont tree))))))
                   (escapeCont '()))))
         (lambda()
           (call/cc
            (lambda (toEscape)
              (set! escapeCont toEscape)
-             (generate-node))))))))
+             (generate-leaf))))))))
 
 (define treeLoop
   (lambda (tree)
     (let ((treeGener (treeGen tree)))
       (let loop()
-        (let ((node (treeGener)))
-          (cond ((null? node) '())
+        (let ((leaf (treeGener)))
+          (cond ((null? leaf) '())
                 (else (begin
-                        (display node)
+                        (display leaf)
                         (newline)
                         (loop)))))))))
 
@@ -76,10 +76,10 @@
     (let ((treeGen1 (treeGen tree1))
           (treeGen2 (treeGen tree2)))
       (let loop()
-        (let ((node1 (treeGen1))
-              (node2 (treeGen2)))
-          (cond ((eq? node1 node2)
-                 (cond ((null? node1) #t)
+        (let ((leaf1 (treeGen1))
+              (leaf2 (treeGen2)))
+          (cond ((eq? leaf1 leaf2)
+                 (cond ((null? leaf1) #t)
                        (else (loop))))
                 (else #f)))))))
 
@@ -90,9 +90,9 @@
   (lambda (tree1 elem)
     (let ((treeGener (treeGen tree1)))
       (let loop()
-        (let ((node (treeGener)))
-          (cond ((null? node) #f)
-                (else (cond ((eq? node elem) #t)
+        (let ((leaf (treeGener)))
+          (cond ((null? leaf) #f)
+                (else (cond ((eq? leaf elem) #t)
                             (else (loop))))))))))
 
 (findElem tree1 6)
@@ -111,11 +111,11 @@
 
 (define-syntax for
   (syntax-rules (in)
-    ((_ node in (tree) body ...)
+    ((_ leaf in (tree) body ...)
      (let ((treeGener (treeGen tree)))
        (let loop()
-         (let ((node (treeGener)))
-           (cond ((null? node) '())
+         (let ((leaf (treeGener)))
+           (cond ((null? leaf) '())
                  (else (begin
                          body ...
                          (loop))))))))))
@@ -124,11 +124,7 @@
 
 (define testGen3 (treeGen tree1))
 
-
-(for node in (tree1)
-  (display node)
+(for leaf in (tree1)
+  (display leaf)
   (newline))
-
-;(define tree1 '(((2)3)5((6(7))8(9))))
-
-
+    
