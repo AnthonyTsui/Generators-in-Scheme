@@ -1,5 +1,7 @@
 (define call/cc call-with-current-continuation)
 
+;List Generator
+
 (define listGen
   (lambda (list)
     (let ((escapeCont '()))
@@ -32,7 +34,16 @@
 
 (define list1 '(1 2 3 4 5 6 7))
 
+(display 'Start_of_listLoop_Example)
+(newline)
+
 (listLoop list1)
+
+(display 'End_of_listLoop_Example)
+(newline)
+
+
+;Tree generator (iterates through nodes)
 
 (define treeGen
   (lambda (tree)
@@ -69,7 +80,16 @@
 
 (define tree2 '(((2)3)5((6(11))8(9))))
 
+(display 'Start_of_treeLoop_example)
+(newline)
+
 (treeLoop tree1)
+
+(display 'End_of_treeLoop_example)
+(newline)
+
+
+;Using two generators to compare two trees
 
 (define treeCompare
   (lambda (tree1 tree2)
@@ -83,8 +103,8 @@
                        (else (loop))))
                 (else #f)))))))
 
-(treeCompare tree1 tree1)
-(treeCompare tree1 tree2)
+;(treeCompare tree1 tree1)
+;(treeCompare tree1 tree2)
 
 (define findElem
   (lambda (tree1 elem)
@@ -95,19 +115,10 @@
                 (else (cond ((eq? node elem) #t)
                             (else (loop))))))))))
 
-(findElem tree1 6)
-(findElem tree1 1)
+;(findElem tree1 6)
+;(findElem tree1 1)
 
 
-;(define-syntax for
-;  (syntax-rules (in)
-;    ((_ leaf in (tree) body ...)
-;     (let loop()
-;       (let ((leaf (tree)))
-;         (cond ((null? leaf) '())
-;               (else (begin
-;                       body ...
-;                       (loop)))))))))
 
 (define-syntax for
   (syntax-rules (in)
@@ -122,13 +133,13 @@
      
 
 
-(define testGen3 (treeGen tree1))
 
 
 (for node in (tree1)
   (display node)
   (newline))
 
-;(define tree1 '(((2)3)5((6(7))8(9))))
+
+
 
 
