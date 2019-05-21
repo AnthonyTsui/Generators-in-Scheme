@@ -3,11 +3,11 @@
 ;List Generator
 
 (define listGen
-  (lambda (list)
-    (let ((escapeCont '()))
+  (lambda (listInput)
+    (let ((escapeCont 'Initial))
       (letrec ((generate-list
                 (lambda ()
-                  (let loop ((list list))
+                  (let loop ((list listInput))
                     (cond ((null? list) 'Skip)
                           (else (begin
                                    (call/cc
@@ -32,6 +32,8 @@
                         (display leaf)
                         (loop)))))))))
 
+;Below are test cases for our list generator
+
 (define list1 '(1 2 3 4 5 6 7))
 
 (display 'Start_of_listLoop_Example)
@@ -46,11 +48,11 @@
 ;Tree generator (iterates through nodes)
 
 (define treeGen
-  (lambda (tree)
+  (lambda (treeInput)
     (let ((escapeCont 'Initial))
       (letrec ((generate-node
                 (lambda ()
-                  (let loop ((tree tree))
+                  (let loop ((tree treeInput))
                     (cond ((null? tree) 'Skip)
                           ((pair? tree) (loop (car tree))
                                         (loop (cdr tree)))
@@ -75,6 +77,8 @@
                         (display node)
                         (newline)
                         (loop)))))))))
+
+;Test cases for tree generator
 
 (define tree1 '(((2)3)5((6(7))8(9))))
 
@@ -106,6 +110,7 @@
 ;(treeCompare tree1 tree1)
 ;(treeCompare tree1 tree2)
 
+;Finding an element in tree using our generator
 (define findElem
   (lambda (tree1 elem)
     (let ((treeGener (treeGen tree1)))
@@ -119,7 +124,7 @@
 ;(findElem tree1 1)
 
 
-
+;Using our generator in order to create a for loop syntax
 (define-syntax for
   (syntax-rules (in)
     ((_ node in (tree) body ...)
@@ -131,9 +136,7 @@
                          body ...
                          (loop))))))))))
      
-
-
-
+;Testcase for our for loop
 
 (for node in (tree1)
   (display node)
